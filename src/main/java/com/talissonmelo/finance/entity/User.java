@@ -12,11 +12,13 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "User")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
