@@ -9,13 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "User")
-@Builder
 @Data
+@AllArgsConstructor
+@Builder
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
