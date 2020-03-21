@@ -1,31 +1,31 @@
 package com.talissonmelo.finance.repository;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.talissonmelo.finance.entity.User;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class UserRepositoryTest implements CommandLineRunner {
+public class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository repository;
-	
-	@Override
-	public void run(String... args) throws Exception {
-		
-		//cenario
+
+	@Test
+	public void testingValueEmail() {
+		// cenario
 		User user = User.builder().name("usuario").email("usuario@gmail.com").build();
 		repository.save(user);
-		
-		//ação
+
+		// ação
 		boolean result = repository.existsByEmail(user.getEmail());
-		
-		
-		//verificação
+
+		// verificação
 		Assertions.assertThat(result).isTrue();
 	}
-
 }
