@@ -1,9 +1,14 @@
 package com.talissonmelo.finance.services.impl;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.talissonmelo.finance.entity.User;
+import com.talissonmelo.finance.exceptions.ErrorAuthenticateException;
 import com.talissonmelo.finance.exceptions.businessRuleException;
 import com.talissonmelo.finance.repository.UserRepository;
 import com.talissonmelo.finance.services.UserService;
@@ -21,14 +26,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User authenticate(String email, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> user = repository.findByEmail(email);
+		
+		if(user.isPresent()) {
+			throw new ErrorAuthenticateException("Usuário não encontrado!.");
+		}
+		
+		if(user.get().getPassword().equals(password)) {
+			throw new ErrorAuthenticateException("Senha inválida!.");
+		}
+		return user.get();
 	}
 
 	@Override
+	@Transactional
 	public User insert(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		validateEmail(user.getEmail());
+		return repository.save(user);
 	}
 
 	@Override
