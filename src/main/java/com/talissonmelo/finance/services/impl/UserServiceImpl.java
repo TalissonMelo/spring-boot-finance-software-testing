@@ -28,11 +28,11 @@ public class UserServiceImpl implements UserService {
 	public User authenticate(String email, String password) {
 		Optional<User> user = repository.findByEmail(email);
 		
-		if(user.isPresent()) {
+		if(!user.isPresent()) {
 			throw new ErrorAuthenticateException("Usuário não encontrado!.");
 		}
 		
-		if(user.get().getPassword().equals(password)) {
+		if(!user.get().getPassword().equals(password)) {
 			throw new ErrorAuthenticateException("Senha inválida!.");
 		}
 		return user.get();
