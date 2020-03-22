@@ -1,26 +1,35 @@
 package com.talissonmelo.finance.repository;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.talissonmelo.finance.entity.User;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class UserRepositoryTest {
 
 	@Autowired
-	private UserRepository repository;
+	UserRepository repository;
+
+	@Autowired
+	TestEntityManager entityManager;
 
 	@Test
 	public void testingValueEmail() {
-		// cenario
-		User user = User.builder().name("usuario").email("usuario@gmail.com").build();
-		repository.save(user);
+		// cenário
+		User user = create();
+		entityManager.persist(user);
 
 		// ação
 		boolean result = repository.existsByEmail("usuario@gmail.com");
@@ -31,13 +40,51 @@ public class UserRepositoryTest {
 
 	@Test
 	public void testingValueEmailFalse() {
-		// cenario
-		repository.deleteAll();
-
 		// ação
 		boolean result = repository.existsByEmail("usuario@gmail.com");
 
 		// verificação
 		Assertions.assertThat(result).isFalse();
+	}
+	
+	@Test
+	public void insertUser() {
+		//cenário
+		User user = create(); 
+				
+		//ação
+		User userSalve = repository.save(user);
+		
+		//verificação
+		Assertions.assertThat(userSalve.getId()).isNotNull();
+		
+	}
+	
+	@Test
+	public void findByEmail() {
+		
+		//cenário
+		User user = create();
+		entityManager.persist(user);
+		
+		//ação
+		Optional<User> obj = repository.findByEmail("usuario@gmail.com");
+		
+		//verificação
+		Assertions.assertThat(obj.isPresent()).isTrue();
+	}
+	
+	@Test
+	public void findByEmailVoidUser() {		
+		//ação
+		Optional<User> obj = repository.findByEmail("usuario@gmail.com");
+		
+		//verificação
+		Assertions.assertThat(obj.isPresent()).isFalse();
+	}
+	
+	public static User create() {
+		return 	User.builder().name("Usuario").email("usuario@gmail.com").password("123456").build();
+
 	}
 }
