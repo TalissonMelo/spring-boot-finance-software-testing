@@ -39,7 +39,6 @@ public class UserResource {
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody UserDTO objDTO) {
-
 		try {
 			User user = User.builder().name(objDTO.getName()).email(objDTO.getEmail()).password(objDTO.getPassword())
 					.build();
