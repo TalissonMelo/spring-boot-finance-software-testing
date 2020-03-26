@@ -16,5 +16,7 @@ public interface LaunchService {
 	public List<Launch> findAll(Launch launchFilter);
 
 	public void updateStatus(Launch launch, StatusLaunch status);
+	
+	public void validate(Launch launch);
 
 }
