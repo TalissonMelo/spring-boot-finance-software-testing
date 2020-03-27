@@ -1,5 +1,7 @@
 package com.talissonmelo.finance.services;
 
+import java.util.Optional;
+
 import com.talissonmelo.finance.entity.User;
 
 public interface UserService {
@@ -10,5 +12,5 @@ public interface UserService {
 	
 	public void validateEmail(String email);
 	
-	
+	public Optional<User> findUserById(Long id);
 }
