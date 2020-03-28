@@ -83,7 +83,7 @@ public class LaunchRespositoryTest {
 		return launch;
 	}
 
-	private Launch createLaunch() {
+	public static Launch createLaunch() {
 		return Launch.builder().description("Lançamento Teste 2020").year(2020).month(3).value((double) 80)
 				.type(TypeLaunch.EXPENSE).status(StatusLaunch.PENDING).date(new Date()).build();
 	}
