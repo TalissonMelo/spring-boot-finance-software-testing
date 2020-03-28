@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,8 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.talissonmelo.finance.entity.enums.StatusLaunch;
 import com.talissonmelo.finance.entity.enums.TypeLaunch;
 
@@ -51,7 +49,7 @@ public class Launch implements Serializable {
 	private Double value;
 
 	@Column(name = "date")
-	@Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
 	private Date date;
 	
 	@Enumerated(value = EnumType.STRING)

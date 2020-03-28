@@ -16,15 +16,14 @@ import com.talissonmelo.finance.exceptions.ErrorAuthenticateException;
 import com.talissonmelo.finance.exceptions.businessRuleException;
 import com.talissonmelo.finance.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/users")
+@RequiredArgsConstructor
 public class UserResource {
 
-	private UserService service;
-
-	public UserResource(UserService service) {
-		this.service = service;
-	}
+	private final UserService service;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticate(@RequestBody UserAuthenticateDTO objDTO) {

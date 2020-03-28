@@ -1,5 +1,6 @@
 package com.talissonmelo.finance.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,10 +31,10 @@ public class LaunchServiceImpl implements LaunchService {
 	}
 
 	@Override
-	@Transactional
 	public Launch insert(Launch launch) {
 		validate(launch);
 		launch.setStatus(StatusLaunch.PENDING);
+		launch.setDate(new Date());
 		return repository.save(launch);
 	}
 

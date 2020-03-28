@@ -25,18 +25,15 @@ import com.talissonmelo.finance.exceptions.businessRuleException;
 import com.talissonmelo.finance.services.LaunchService;
 import com.talissonmelo.finance.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/launches")
+@RequiredArgsConstructor
 public class LaunchResource {
 
-	private LaunchService service;
-	private UserService userService;
-
-	public LaunchResource(LaunchService service, UserService userService) {
-		super();
-		this.service = service;
-		this.userService = userService;
-	}
+	private final LaunchService service;
+	private final UserService userService;
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody LaunchDTO objDTO) {
@@ -89,7 +86,7 @@ public class LaunchResource {
 		launchFilter.setYear(year);
 
 		Optional<User> use = userService.findUserById(user);
-		if (use.isPresent()) {
+		if (!use.isPresent()) {
 			return ResponseEntity.badRequest().body("Usuário não encontrado com Id " + user);
 		} else {
 			launchFilter.setUser(use.get());
