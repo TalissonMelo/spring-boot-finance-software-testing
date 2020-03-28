@@ -2,6 +2,7 @@ package com.talissonmelo.finance.services.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -100,6 +101,11 @@ public class LaunchServiceImpl implements LaunchService {
 			throw new businessRuleException("Informe uma Usuário!");
 		}
 
+	}
+
+	@Override
+	public Optional<Launch> findLaunchId(Long id) {
+		return repository.findById(id);
 	}
 
 }

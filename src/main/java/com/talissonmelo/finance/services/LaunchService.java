@@ -1,6 +1,7 @@
 package com.talissonmelo.finance.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.talissonmelo.finance.entity.Launch;
 import com.talissonmelo.finance.entity.enums.StatusLaunch;
@@ -18,5 +19,7 @@ public interface LaunchService {
 	public void updateStatus(Launch launch, StatusLaunch status);
 	
 	public void validate(Launch launch);
+	
+	public Optional<Launch> findLaunchId(Long id);
 
 }
