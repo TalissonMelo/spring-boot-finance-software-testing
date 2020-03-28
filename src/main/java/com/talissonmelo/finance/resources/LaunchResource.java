@@ -3,7 +3,6 @@ package com.talissonmelo.finance.resources;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.hql.internal.ast.tree.UpdateStatement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

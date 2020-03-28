@@ -21,5 +21,7 @@ public interface LaunchService {
 	public void validate(Launch launch);
 	
 	public Optional<Launch> findLaunchId(Long id);
+	
+	public Double balanceUser(Long id);
 
 }

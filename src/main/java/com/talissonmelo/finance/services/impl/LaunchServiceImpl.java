@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.talissonmelo.finance.entity.Launch;
 import com.talissonmelo.finance.entity.enums.StatusLaunch;
+import com.talissonmelo.finance.entity.enums.TypeLaunch;
 import com.talissonmelo.finance.exceptions.ErrorAuthenticateException;
 import com.talissonmelo.finance.exceptions.businessRuleException;
 import com.talissonmelo.finance.repository.LaunchRepository;
@@ -107,6 +108,22 @@ public class LaunchServiceImpl implements LaunchService {
 	@Override
 	public Optional<Launch> findLaunchId(Long id) {
 		return repository.findById(id);
+	}
+
+	@Override
+	public Double balanceUser(Long id) {
+		Double recipe = repository.balanceUser(id, TypeLaunch.RECIPE);
+		Double expense = repository.balanceUser(id, TypeLaunch.EXPENSE);
+		
+		if(recipe == null) {
+			recipe = (double) 0;
+		}
+		
+		if(expense == null) {
+			expense = (double) 0;
+		}
+		
+		return recipe - expense;
 	}
 
 }
