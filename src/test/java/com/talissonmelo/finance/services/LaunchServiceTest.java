@@ -3,6 +3,7 @@ package com.talissonmelo.finance.services;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -146,4 +147,42 @@ public class LaunchServiceTest {
 		Assertions.assertThat(launch.getStatus()).isEqualTo(statusNew);
 		Mockito.verify(service).update(launch);
 	}
+	
+	@Test
+	public void findByIdLaunch() {
+		//cenário
+		Long id = 1l;
+		
+		Launch launch = LaunchRespositoryTest.createLaunch();
+		launch.setId(id);
+		
+		Mockito.when(repository.findById(id)).thenReturn(Optional.of(launch));
+		
+		//execução
+		Optional<Launch> result =  service.findLaunchId(id);
+		
+		//verificação
+		Assertions.assertThat(result.isPresent()).isTrue();
+		
+	}
+	
+	@Test
+	public void findByIdLaunchError() {
+		//cenário
+		Long id = 1l;
+		
+		Launch launch = LaunchRespositoryTest.createLaunch();
+		launch.setId(id);
+		
+		Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+		
+		//execução
+		Optional<Launch> result =  service.findLaunchId(id);
+		
+		//verificação
+		Assertions.assertThat(result.isPresent()).isFalse();
+		
+	}
+	
+	
 }
