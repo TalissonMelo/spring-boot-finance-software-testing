@@ -15,7 +15,9 @@ import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.talissonmelo.finance.entity.Launch;
+import com.talissonmelo.finance.entity.User;
 import com.talissonmelo.finance.entity.enums.StatusLaunch;
+import com.talissonmelo.finance.entity.enums.TypeLaunch;
 import com.talissonmelo.finance.exceptions.businessRuleException;
 import com.talissonmelo.finance.repository.LaunchRepository;
 import com.talissonmelo.finance.repository.LaunchRespositoryTest;
@@ -147,42 +149,111 @@ public class LaunchServiceTest {
 		Assertions.assertThat(launch.getStatus()).isEqualTo(statusNew);
 		Mockito.verify(service).update(launch);
 	}
-	
+
 	@Test
 	public void findByIdLaunch() {
-		//cenário
+		// cenário
 		Long id = 1l;
-		
+
 		Launch launch = LaunchRespositoryTest.createLaunch();
 		launch.setId(id);
-		
+
 		Mockito.when(repository.findById(id)).thenReturn(Optional.of(launch));
-		
-		//execução
-		Optional<Launch> result =  service.findLaunchId(id);
-		
-		//verificação
+
+		// execução
+		Optional<Launch> result = service.findLaunchId(id);
+
+		// verificação
 		Assertions.assertThat(result.isPresent()).isTrue();
-		
+
 	}
-	
+
 	@Test
 	public void findByIdLaunchError() {
-		//cenário
+		// cenário
 		Long id = 1l;
-		
+
 		Launch launch = LaunchRespositoryTest.createLaunch();
 		launch.setId(id);
-		
+
 		Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
-		
-		//execução
-		Optional<Launch> result =  service.findLaunchId(id);
-		
-		//verificação
+
+		// execução
+		Optional<Launch> result = service.findLaunchId(id);
+
+		// verificação
 		Assertions.assertThat(result.isPresent()).isFalse();
-		
+
 	}
-	
-	
+
+	@Test
+	public void validadeLaunchErrors() {
+		// cenário
+		Launch launch = new Launch();
+
+		Throwable error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class)
+				.hasMessage("Informe uma Descrição válida!");
+
+		launch.setDescription("");
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class)
+				.hasMessage("Informe uma Descrição válida!");
+
+		launch.setDescription("Salario");
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Mês válida!");
+
+		launch.setMonth(0);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Mês válida!");
+
+		launch.setMonth(13);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Mês válida!");
+
+		launch.setMonth(3);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Ano válida!");
+
+		launch.setYear(202);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Ano válida!");
+
+		launch.setYear(2020);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Valor válido.");
+
+		launch.setValue((double) 0);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Valor válido.");
+
+		launch.setValue((double) 29);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class)
+				.hasMessage("Informe um tipo de lançamento.");
+
+		launch.setType(TypeLaunch.EXPENSE);
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Usuário!");
+
+		launch.setUser(new User());
+
+		error = Assertions.catchThrowable(() -> service.validate(launch));
+		Assertions.assertThat(error).isInstanceOf(businessRuleException.class).hasMessage("Informe uma Usuário!");
+
+		launch.getUser().setId(1l);
+
+	}
+
 }
