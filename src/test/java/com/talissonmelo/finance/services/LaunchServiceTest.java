@@ -1,6 +1,8 @@
 package com.talissonmelo.finance.services;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.talissonmelo.finance.entity.Launch;
@@ -93,5 +96,54 @@ public class LaunchServiceTest {
 		// verificação
 		Mockito.verify(repository, Mockito.never()).save(launch);
 
+	}
+
+	@Test
+	public void deleteLaunchSuccess() {
+		// cenário
+		Launch launch = LaunchRespositoryTest.createLaunch();
+		launch.setId(1l);
+
+		// execução
+		service.delete(1l);
+
+		// verificação
+		Mockito.verify(repository).deleteById(1l);
+	}
+
+	@Test
+	public void findAllLaunch() {
+		// cenário
+		Launch launch = LaunchRespositoryTest.createLaunch();
+		launch.setId(1l);
+		launch.setDate(new Date());
+
+		List<Launch> list = Arrays.asList(launch);
+		Mockito.when(repository.findAll(Mockito.any(Example.class))).thenReturn(list);
+
+		// execução
+		List<Launch> result = service.findAll(launch);
+
+		// verificação
+		Assertions.assertThat(result).isNotEmpty().hasSize(1).contains(launch);
+
+	}
+
+	@Test
+	public void updateStatusLaunch() {
+		// cenário
+		Launch launch = LaunchRespositoryTest.createLaunch();
+		launch.setId(1l);
+		launch.setStatus(StatusLaunch.PENDING);
+
+		StatusLaunch statusNew = StatusLaunch.EFFECTIVE;
+		Mockito.doReturn(launch).when(service).update(launch);
+
+		// execução
+		service.updateStatus(launch, statusNew);
+
+		// verificação
+		Assertions.assertThat(launch.getStatus()).isEqualTo(statusNew);
+		Mockito.verify(service).update(launch);
 	}
 }
