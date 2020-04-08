@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.talissonmelo.finance.entity.Launch;
 import com.talissonmelo.finance.entity.User;
@@ -16,13 +19,19 @@ import com.talissonmelo.finance.repository.LaunchRepository;
 import com.talissonmelo.finance.repository.UserRepository;
 
 @SpringBootApplication
-public class FinanceApplication implements CommandLineRunner{
+@EnableWebMvc
+public class FinanceApplication implements CommandLineRunner, WebMvcConfigurer{
 	
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
 	private LaunchRepository launchRepository;
+	
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(FinanceApplication.class, args);
