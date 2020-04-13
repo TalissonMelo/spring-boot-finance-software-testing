@@ -3,6 +3,8 @@ Projeto backend Spring Boot e Testes Unitários com JUnit e Mockit
 
 Spring Boot, Spring MVC, Hibernate, REST, e MySQL.
 
+Utilizando biblioteca Java Lombok.
+
 Operações de CRUD e Casos de Uso.
 
 Utilizar Postman ou Insomnia para teste.
