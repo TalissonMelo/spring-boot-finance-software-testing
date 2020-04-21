@@ -75,9 +75,11 @@ public class LaunchResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findAll(@RequestParam(value = "description", required = false) String description,
+	public ResponseEntity<?> findAll(
+			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "month", required = false) Integer month,
-			@RequestParam(value = "year", required = false) Integer year, @RequestParam("user") Long user) {
+			@RequestParam(value = "year", required = false) Integer year, 
+			@RequestParam("user") Long user) {
 
 		Launch launchFilter = new Launch();
 		launchFilter.setDescription(description);
