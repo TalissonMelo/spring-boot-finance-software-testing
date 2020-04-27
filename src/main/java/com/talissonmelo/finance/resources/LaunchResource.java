@@ -97,6 +97,16 @@ public class LaunchResource {
 		return ResponseEntity.ok().body(list);
 
 	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> findById(@PathVariable Long id){
+		Launch launch = service.findLaunchId(id).orElseThrow(
+				() -> new businessRuleException("Lançamento não encontrado. Id: " + id) );
+		
+		LaunchDTO dto = toDTO(launch);
+		return ResponseEntity.ok().body(dto);
+		
+	}
 
 	@PutMapping(value = "/{id}/updateStatus")
 	public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody UpdateStatusDTO status) {
@@ -114,6 +124,19 @@ public class LaunchResource {
 				return ResponseEntity.badRequest().body(e.getMessage());
 			}
 		}).orElseGet(() -> new ResponseEntity<String>("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
+	}
+	
+	private LaunchDTO toDTO(Launch launch) {
+		
+		return LaunchDTO.builder()
+				.id(launch.getId())
+				.description(launch.getDescription())
+				.value(launch.getValue())
+				.month(launch.getMonth())
+				.year(launch.getYear())
+				.status(launch.getStatus().name())
+				.type(launch.getType().name())
+				.user(launch.getUser().getId()).build();
 	}
 
 	private Launch fromDTO(LaunchDTO dto) {
