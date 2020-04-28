@@ -112,8 +112,8 @@ public class LaunchServiceImpl implements LaunchService {
 
 	@Override
 	public Double balanceUser(Long id) {
-		Double recipe = repository.balanceUser(id, TypeLaunch.RECIPE);
-		Double expense = repository.balanceUser(id, TypeLaunch.EXPENSE);
+		Double recipe = repository.balanceUser(id, TypeLaunch.RECIPE , StatusLaunch.EFFECTIVE);
+		Double expense = repository.balanceUser(id, TypeLaunch.EXPENSE, StatusLaunch.EFFECTIVE);
 		
 		if(recipe == null) {
 			recipe = (double) 0;

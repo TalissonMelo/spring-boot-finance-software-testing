@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.talissonmelo.finance.entity.Launch;
+import com.talissonmelo.finance.entity.enums.StatusLaunch;
 import com.talissonmelo.finance.entity.enums.TypeLaunch;
 
 public interface LaunchRepository extends JpaRepository<Launch, Long>{
 	
 	@Query(value = " select sum(l.value) from Launch l join l.user u "
-			+ "where u.id = :user_id and l.type = :type group by u")
-	Double balanceUser(@Param("user_id") Long user_id,@Param("type") TypeLaunch type);
+			+ "where u.id = :user_id and l.type = :type and l.status = :status group by u")
+	Double balanceUser(@Param("user_id") Long user_id, 
+			@Param("type") TypeLaunch type,
+			@Param("status") StatusLaunch status);
 
 }

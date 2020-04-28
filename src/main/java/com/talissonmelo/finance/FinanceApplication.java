@@ -43,7 +43,7 @@ public class FinanceApplication implements CommandLineRunner, WebMvcConfigurer{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
 		User user = new User(null, "Talisson Melo", "talisson.cursos@gmail.com", "123456");
-		User user1 = new User(null, "Joao", "joao@gmail.com", "123456");
+		User user1 = new User(null, "Talisson", "talisson@gmail.com", "123456");
 		
 		userRepository.saveAll(Arrays.asList(user,user1));
 		
